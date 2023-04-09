@@ -1,5 +1,19 @@
 
 def isInCycle(match_scores,donor_friends,query):
+    # create an array for recipient nodes and adjacent nodes as arrays of each node
+    node_count = len(match_scores[0])
+    nodes = [[] for x in range(node_count)]
+
+    donor_count = len(match_scores)
+
+    # check if there is score 60 and above
+    for row in range(donor_count):
+        for col in range(node_count):
+            if match_scores[row][col] >= 60:
+                donor_id = row
+                recipient_id = donor_friends[donor_id]
+                nodes[recipient_id].append(col)
+    print(nodes)
     return False
 
 def take_input():
