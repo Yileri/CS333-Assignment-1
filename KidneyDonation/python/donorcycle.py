@@ -13,7 +13,27 @@ def isInCycle(match_scores,donor_friends,query):
                 donor_id = row
                 recipient_id = donor_friends[donor_id]
                 nodes[recipient_id].add(col)
-    print(nodes)
+
+    visit = []
+    stack = []
+
+    def dfs(v, parent):
+        visit.append(v)
+        stack.append(v)
+
+        for node in nodes[v]:
+            if node not in visit:
+                if dfs(node, v):
+                    return True
+            elif node in stack:
+                if parent == v or node == query:
+                    return True
+
+        stack.pop()
+        return False
+
+    if dfs(query, None):
+        return True
     return False
 
 def take_input():
