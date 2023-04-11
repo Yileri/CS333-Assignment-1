@@ -9,17 +9,17 @@ def subprime_path(capacity_graph, load_graph, start, end):
         for truck in range(len(capacity_graph[city])):
             final_graph[city].append((load_graph[city][truck][0], (load_graph[city][truck][1]/capacity_graph[city][truck][1]) * 100))
 
-    cost_graph = {}
+    per_graph = {}
     for city in range(city_length):
         # make the default percentage higher than possible which is 100
         # and set initial way to a node as empty
-        cost_graph[city] = {"cost": 105, "way": []}
+        per_graph[city] = {"per": 105, "way": []}
 
     # create visit list
     visit = []
 
-    # set the beginning node's cost to 0
-    cost_graph[start]["cost"] = 0
+    # set the beginning node's percentage to 0
+    per_graph[start]["per"] =0
 
     temp = start
 
@@ -31,15 +31,36 @@ def subprime_path(capacity_graph, load_graph, start, end):
             # create heap for determining min capacity way for this city
             heap = []
 
-            for neighbor in final_graph[start]:
-                if neighbor[0] not in visit:
-                    print(neighbor[0])
+            for neighbor in final_graph[temp]:
+                neighbor_id = neighbor[0]
+                if neighbor_id not in visit:
+                    # set initial percentage equal to first discovery
+                    percentage = neighbor[1]
+
+                    # if new discovered percentage is lower than current, set to it
+                    # and add the city to way list
+                    if percentage < per_graph[neighbor_id]["per"]:
+                        per_graph[neighbor_id]["per"] = percentage
+                        per_graph[neighbor_id]["way"] = per_graph[temp]["way"] + [temp]
+
+                    # push values into the heap
+                    pq.heappush(heap, (per_graph[neighbor_id]["per"],neighbor_id))
+
+        pq.heapify(heap)
+
+        if temp != end:
+            temp = heap[0][1]
+        else:
+            for city in range(len(per_graph[end]["way"])):
+                print(per_graph[end]["way"][city])
+            print(temp)
+            break
 
 
-    print(cost_graph)
-    print(load_graph)
-    print(capacity_graph)
-    print(final_graph)
+   # print(per_graph)
+   # print(load_graph)
+   # print(capacity_graph)
+   # print(final_graph)
 
 def main():
     c = int(input())
