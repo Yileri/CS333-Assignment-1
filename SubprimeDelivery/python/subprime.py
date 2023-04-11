@@ -1,18 +1,40 @@
 import heapq as pq
 
 def subprime_path(capacity_graph, load_graph, start, end):
-    final_graph = [[] for x in range(len(capacity_graph))]
+    city_length = len(capacity_graph)
+    final_graph = [[] for x in range(city_length)]
 
     # compute ratios for edges and fill the graph with it
-    for city in range(len(capacity_graph)):
+    for city in range(city_length):
         for truck in range(len(capacity_graph[city])):
             final_graph[city].append((load_graph[city][truck][0], (load_graph[city][truck][1]/capacity_graph[city][truck][1]) * 100))
 
     cost_graph = {}
-    for city in range(len(final_graph)):
+    for city in range(city_length):
         # make the default percentage higher than possible which is 100
         # and set initial way to a node as empty
         cost_graph[city] = {"cost": 105, "way": []}
+
+    # create visit list
+    visit = []
+
+    # set the beginning node's cost to 0
+    cost_graph[start]["cost"] = 0
+
+    temp = start
+
+    # for loop for every city except start city
+    for city in range(city_length-1):
+        if temp not in visit:
+            visit.append(temp)
+
+            # create heap for determining min capacity way for this city
+            heap = []
+
+            for neighbor in final_graph[start]:
+                if neighbor[0] not in visit:
+                    print(neighbor[0])
+
 
     print(cost_graph)
     print(load_graph)
