@@ -1,7 +1,15 @@
 import heapq as pq
 
 def subprime_path(capacity_graph, load_graph, start, end):
-    print('hello world')
+    final_graph = [[] for x in range(len(capacity_graph))]
+
+    for city in range(len(capacity_graph)):
+        for truck in range(len(capacity_graph[city])):
+            final_graph[city].append((load_graph[city][truck][0], (load_graph[city][truck][1]/capacity_graph[city][truck][1])))
+
+    print(load_graph)
+    print(capacity_graph)
+    print(final_graph)
 
 def main():
     c = int(input())
